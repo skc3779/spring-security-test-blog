@@ -15,6 +15,7 @@
  */
 package org.springframework.security.test.context.showcase.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +25,13 @@ import org.springframework.stereotype.Component;
  * @author Rob Winch
  */
 @Component
+@Slf4j
 public class HelloMessageService implements MessageService {
 
 	@PreAuthorize("authenticated")
 	public String getMessage() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		log.info("getMessage Authentication {}", authentication);
 		return "Hello " + authentication;
 	}
 }

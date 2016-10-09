@@ -15,8 +15,7 @@
  */
 package org.springframework.security.test.context.showcase;
 
-import static org.fest.assertions.Assertions.assertThat;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.test.context.showcase.service.HelloMessageService;
 import org.springframework.security.test.context.showcase.service.MessageService;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextTestExcecutionListener;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,17 +36,19 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * @author Rob Winch
  */
-
+@Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @TestExecutionListeners(listeners={ServletTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
-        WithSecurityContextTestExcecutionListener.class})
+        WithSecurityContextTestExecutionListener.class})
 public class WithMockUserTests {
     @Autowired
     private MessageService messageService;
@@ -61,6 +62,7 @@ public class WithMockUserTests {
     @WithMockUser
     public void getMessageWithMockUser() {
         String message = messageService.getMessage();
+
         assertThat(message).contains("user");
     }
 
@@ -84,9 +86,10 @@ public class WithMockUserTests {
     static class Config {
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER");
+//            auth
+//                .inMemoryAuthentication()
+//                    .withUser("user").password("password").roles("USER");
         }
     }
+
 }
